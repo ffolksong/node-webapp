@@ -15,6 +15,7 @@
 <!--Javascript-->
 <script src="/jquery/jquery.min.js"></script>
 <script src="/jquery-ui/jquery-ui.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 <script type="text/javascript">
@@ -45,7 +46,7 @@
            headers: { 
              'Content-Type': 'application/json',
              "Accepts": "application/json",
-             "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjU5MTc5ODkyLCJleHAiOjE2NTkxODM0OTIsIm5iZiI6MTY1OTE3OTg5MiwianRpIjoiS3JoWGtGVkdrNW5XMGM2cCIsInN1YiI6OTcsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.X8gh42Puw-3KdeAtlCx6XmjoyJauSIUMTRsylEhmCTs",
+             "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjYxNzg0MzYyLCJleHAiOjE2NjE3ODc5NjIsIm5iZiI6MTY2MTc4NDM2MiwianRpIjoiVVpObFNIZ0pyanNjTUtrcCIsInN1YiI6OTcsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bigwUBzK19D_XMRM0i-sU1qqY8FguUVj5ZO_F1KeNuA",
            },
            success: function(data){
              console.log(data);
@@ -136,7 +137,7 @@
       var tr = document.createElement('TR');
       //$(tr);
       tableBody.appendChild(tr);
-        
+      
       var color;
       if(i%2==0){
         color="#F1E2E2"; // result%2 != 0
@@ -205,7 +206,7 @@
           //elementButtonSave.setAttribute("class","tealA400");
           
          
-          elementButtonSave.setAttribute("onclick","popupConfirm('"+items[i].fullname+"',this)");
+          elementButtonSave.setAttribute("onclick","confirmAlert('"+items[i].student_id+"',this)");
           
   
           cell5.appendChild(elementButtonSave);
@@ -219,9 +220,49 @@
       myTableDiv.appendChild(table);
     }
   
-    function popupConfirm(fullname,objElement){
-      alert(fullname);
+    // function popupConfirm(fullname, objElement){
+    //   alert(fullname, position);
+    // }
+
+    function confirmAlert(id){
+      //console.log(id);
+
+      swal({
+        title: "Are you sure?",
+        text: "Click comfirm to view more information",
+        icon: "info",
+        buttons: true,
+        dangerMode: true,
+        })
+      .then((willDelete) => {
+        if (willDelete) {
+          $("#tabs").tabs("option","active",2);
+          swal("You pressed OK!", {
+            icon: "success",
+          });
+        }else{
+          swal("You pressed Cancel!");
+        }
+      })
+          $.ajax({
+            method: "GET",
+            url: "https://tools.ecpe.nu.ac.th/network/api/student/"+id,
+            dataType: 'json',
+            headers: {
+              'Content-Type': 'application/json',
+              "Accepts": "application/json",
+              "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjYxNzg0MzYyLCJleHAiOjE2NjE3ODc5NjIsIm5iZiI6MTY2MTc4NDM2MiwianRpIjoiVVpObFNIZ0pyanNjTUtrcCIsInN1YiI6OTcsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bigwUBzK19D_XMRM0i-sU1qqY8FguUVj5ZO_F1KeNuA',
+            },
+            success: function(data){
+              console.log(data);
+              document.getElementById("data-name").innerHTML = "Name: "+data[0].fullname;
+              document.getElementById("data-studentID").innerHTML = "Student_ID: "+data[0].student_id;
+              document.getElementById("data-gpa").innerHTML = "GPA: "+data[0].gpa;
+              document.getElementById("data-position").innerHTML = "Position: "+data[0].position;
+            }
+          });
     }
+
   </script>
 
 
@@ -229,7 +270,7 @@
 </head>
 <body>
     <!--put here-->
-    <h1>Hello, Hoola</h1>
+    <!-- <h1>Hello, Hoola</h1> -->
     <!---->
 
     <div id="tabs">
@@ -262,14 +303,15 @@
           <div class="flex justify-center">
             <div class="rounded-lg shadow-lg bg-white max-w-sm">
               <a href="#!">
-                <img class="rounded-t-lg" src="public/images/profile.png" alt=""/>
+                <img class="rounded-t-lg" src="images/profile.png" alt=""/>
               </a>
               <div class="p-6">
-                <h5 class="text-gray-900 text-xl font-medium mb-2">I'm pancake</h5>
-                <p class="text-gray-700 text-base mb-4">
-                  Zzz.Zzz 
-                </p>
-                <button type="button" class=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Button</button>
+                <h5 class="text-gray-900 text-xl font-medium mb-2">I'm an Ordinary man.</h5>
+                <h5 class="text-gray-900 text-xl font-medium mb-2" id="data-name" style="text-align: center ;">Name: </h5>
+                <h5 class="text-gray-900 text-xl font-medium mb-2" id="data-studentID" style="text-align: center;">Student ID: </h5>
+                <h5 class="text-gray-900 text-xl font-medium mb-2" id="data-gpa" style="text-align: center;">GPA: </h5>
+                <h5 class="text-gray-900 text-xl font-medium mb-2" id="data-position" style="text-align: center;">Position: </h5>
+                <!-- <button type="button" class=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Button</button> -->
               </div>
             </div>
           </div>
@@ -277,6 +319,6 @@
         </div>
     </div><!-- tabs-->
 
-    <p><a href="form">Submit</a></p>
+    <!-- <p><a href="form">Submit</a></p>> -->
 </body>
 </html>

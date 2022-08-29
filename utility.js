@@ -2,11 +2,12 @@
 
 const request = require("request-promise");
 const EXTERNAL_API="https://tools.ecpe.nu.ac.th/network/api/student/"; // put url
-const accessToken=""; // put access token
+const accessToken="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjYxNzg0MzYyLCJleHAiOjE2NjE3ODc5NjIsIm5iZiI6MTY2MTc4NDM2MiwianRpIjoiVVpObFNIZ0pyanNjTUtrcCIsInN1YiI6OTcsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bigwUBzK19D_XMRM0i-sU1qqY8FguUVj5ZO_F1KeNuA"; // put access token
 const student = {
-  name: '', // replace with your full name.
-  age: 19, // put your age.
-  gender: '', // replace with your gender
+student_id: '63362082',
+  name: 'Nattawut', // replace with your full name.
+  age: 20, // put your age.
+  gender: 'Male', // replace with your gender
   department: 'CPE'
 };
 
@@ -46,7 +47,7 @@ exports.findStudentbyId = function (student_id, cb) {
             method: "GET",
             uri: EXTERNAL_API+student_id,
             headers: {
-                Authorization: `Bearer ${accessToken}`
+                Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90b29scy5lY3BlLm51LmFjLnRoXC9uZXR3b3JrXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjYxNzg0MzYyLCJleHAiOjE2NjE3ODc5NjIsIm5iZiI6MTY2MTc4NDM2MiwianRpIjoiVVpObFNIZ0pyanNjTUtrcCIsInN1YiI6OTcsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.bigwUBzK19D_XMRM0i-sU1qqY8FguUVj5ZO_F1KeNuA`
             }
         }).then((response) => {
             console.log('Sent');
@@ -66,7 +67,7 @@ exports.findStudentbyId = function (student_id, cb) {
 }
 
 
-exports.fakeStudentbyInfo = function (student_id, cb) {
+// exports.fakeStudentbyInfo = function (student_id, cb) {
 
-  cb(student);
-}
+//   cb(student);
+// }
